@@ -1,4 +1,12 @@
-var footer = {"text": "Regex Pattern Action | v1.0 | By Repz Sep"} //footer, change it to your server information if you want
+//config
+const messages = [
+    {id: "1", message: "Template message"}
+]
+
+const penalties = [
+    {regex: "", action: "", timespan: "", messageId: "1"},
+]
+
 
 var plugin = {
     author: 'sepehr-gh',
