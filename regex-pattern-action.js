@@ -16,7 +16,10 @@ var plugin = {
     //handle a message
     onMessage: function(gameEvent, server){
         const message = gameEvent.Message;
-
+        const penalty = this.getPenalty(message);
+        if(penalty === undefined || !penalty.hasPenalty)
+            return;
+        
     },
 
     onEventAsync: function (gameEvent, server) {
