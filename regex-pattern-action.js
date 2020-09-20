@@ -14,7 +14,21 @@ var plugin = {
     },
 
     handlePenalty: function(action, origin){
-        
+        const lowerCasedAction = action.toLowerCase();
+        switch (lowerCasedAction){
+            case "warn":
+
+                break;
+            case "kick":
+
+                break;
+            case "ban":
+
+                break;
+            case "permban":
+
+            break;
+        };
     },
 
     //handle a message
