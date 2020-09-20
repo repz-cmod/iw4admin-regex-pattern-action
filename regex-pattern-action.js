@@ -7,6 +7,12 @@ var plugin = {
     logger: null,
     manager: null,
 
+    getPenalty: function(message){
+        //todo: check patterns map
+
+        return {hasPenalty: false, penalty: null, message: ''};
+    },
+
     //handle a message
     onMessage: function(gameEvent, server){
         const message = gameEvent.Message;
