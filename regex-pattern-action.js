@@ -12,7 +12,15 @@ const penalties = [
     {regex: new RegExp(""), action: "", timespan: "", messageId: "1"},
 ];
 
+// discord config
+const discordConfig = {
+    useDiscord: false,
+    webhookUrl = '',
+    footer = {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"} //footer, change it to your server information if you want
+}
 
+
+//plugin code here, do not make any changes unless you know what you are doing
 var plugin = {
     author: 'sepehr-gh',
     version: 1.0,
