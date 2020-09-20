@@ -123,11 +123,14 @@ var plugin = {
 
     //handle a message
     onMessage: function(gameEvent, server){
+        if(gameEvent.Origin === undefined || gameEvent.Origin == null)
+            return;
         const message = gameEvent.Message;
         const penaltyObj = this.getPenalty(message);
         if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
         this.handlePenalty(penaltyObj.action, penaltyObj.message, penaltyObj.timespan, gameEvent.Origin);
+        this.handleDiscordMessage(penalty, message, server, gameEvent.Origin);
     },
 
     onEventAsync: function (gameEvent, server) {
