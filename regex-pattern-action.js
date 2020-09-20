@@ -14,11 +14,13 @@ const penalties = [
 
 // discord config
 const discordConfig = {
-    useDiscord: false,
-    webhookUrl = '',
-    footer = {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"}, //footer, change it to your server information if you want
-    colorValue = 7506394,
-    iw4adminUrlPrefix = '',
+    enable: false,
+    webhookUrl: '',
+    title: "**Player has faced a penalty**",
+    footer: {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"}, //footer, change it to your server information if you want
+    colorValue: 7506394,
+    iw4adminUrlPrefix: '',
+    forActions: ['ban', 'permban']
 }
 
 
@@ -29,6 +31,50 @@ var plugin = {
     name: 'Regex Pattern Action',
     logger: null,
     manager: null,
+
+    //cleans host name of server
+    cleanHostname: function(hostname){
+        var index = 0;
+        do{
+            index = hostname.indexOf("^");
+            hostname = this.setCharAt(hostname, index, "");
+            hostname = this.setCharAt(hostname, index, "");
+        }while(index !== -1);
+
+        return hostname;
+    },
+
+    //sends discord message about the ban
+    handleDiscordMessage: function(penalty, message, server, origin){
+        if(!discordConfig.enable || discordConfig.forActions.includes(penalty.action)) return;
+        let cleanHostname = this.cleanHostname(server.Hostname);
+        var embed = {
+            "title": discordConfig.title,
+            "description": "Player **" + origin.CleanedName + "** (["+origin.AliasLinkId+"]("+discordConfig.iw4adminUrlPrefix + origin.AliasLinkId+")) has sent a message that resulted with a penalty.\n" +
+                            "Penalty Action: **"+ penalty.action +"**\n"+                
+                            "Message: `"+ message +"`\n"+
+                            "Server: **"+ cleanHostname+"**\n"+
+                            "Client IP: **"+origin.IPAddressString+"**\n"+
+                            "NetworkId (GUID): **"+origin.NetworkId+"**\n",
+            "color": discordConfig.colorValue,
+            "timestamp": new Date().toISOString(),
+            "footer": discordConfig.footer
+        }
+
+        var embeds = []; embeds[0] = embed;
+        var webhookData = {"embeds": embeds};
+        
+        try {
+            var client = new System.Net.Http.HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
+            var content = new System.Net.Http.StringContent(JSON.stringify(webhookData), System.Text.Encoding.UTF8, "application/json");
+            var result = client.PostAsync(discordConfig.webhookUrl, content).Result;
+            result.Dispose();
+            client.Dispose();
+        } catch (error) {
+            this.logger.WriteWarning('There was a problem sending message to discord ' + error.message);
+        }
+    },
 
     //loops through messages and get message with valid input id or returns the default message
     getMessageById: function(id){
