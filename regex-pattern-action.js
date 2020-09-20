@@ -9,7 +9,7 @@ const messages = [
 
 //penalties list
 const penalties = [
-    {regex: "", action: "", timespan: "", messageId: "1"},
+    {regex: new RegExp(""), action: "", timespan: "", messageId: "1"},
 ];
 
 
@@ -33,7 +33,12 @@ var plugin = {
     //get valid penalty for a message based on config file/data
     getPenalty: function(message){
         //todo: check patterns map
-
+        for(i = 0; i < penalties.length; i++){
+            var penalty = penalties[i];
+            if(penalty.regex.test(messages)){
+                return {hasPenalty: true, action: penalty.action, message: this.getMessageById(penalty.messageId), timespan: penalty.timespan}; 
+            }
+        }
         return {hasPenalty: false, action: null, message: '', timespan: ''};
     },
 
