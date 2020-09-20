@@ -91,7 +91,7 @@ var plugin = {
         //todo: check patterns map
         for(i = 0; i < penalties.length; i++){
             var penalty = penalties[i];
-            if(penalty.regex.test(messages)){
+            if(penalty.regex.exec(message) !== null){
                 return {hasPenalty: true, action: penalty.action, message: this.getMessageById(penalty.messageId), timespan: penalty.timespan}; 
             }
         }
