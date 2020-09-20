@@ -7,12 +7,14 @@ var plugin = {
     logger: null,
     manager: null,
 
+    //get valid penalty for a message based on config file/data
     getPenalty: function(message){
         //todo: check patterns map
 
         return {hasPenalty: false, action: null, message: '', timespan: ''};
     },
 
+    //handle penalty based on action and timestamp
     handlePenalty: function(action, message, timespan, origin){
         const lowerCasedAction = action.toLowerCase();
         switch (lowerCasedAction){
