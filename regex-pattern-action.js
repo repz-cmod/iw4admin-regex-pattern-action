@@ -17,17 +17,21 @@ var plugin = {
         const lowerCasedAction = action.toLowerCase();
         switch (lowerCasedAction){
             case "warn":
-
+                origin.Warn(message, _IW4MAdminClient);
                 break;
             case "kick":
-
+                origin.Kick(message, _IW4MAdminClient);
                 break;
             case "ban":
-
+            case "tempban":
+                origin.TempBan(message, System.TimeSpan.Parse(timespan), _IW4MAdminClient);
                 break;
             case "permban":
-
-            break;
+                origin.Ban(message, _IW4MAdminClient, false);
+                break;
+            default:
+                this.logger.WriteWarning("Could not handle action: " + action)
+                break;
         };
     },
 
