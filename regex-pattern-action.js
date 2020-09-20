@@ -10,10 +10,10 @@ var plugin = {
     getPenalty: function(message){
         //todo: check patterns map
 
-        return {hasPenalty: false, action: null, message: ''};
+        return {hasPenalty: false, action: null, message: '', timespan: ''};
     },
 
-    handlePenalty: function(action, origin){
+    handlePenalty: function(action, message, timespan, origin){
         const lowerCasedAction = action.toLowerCase();
         switch (lowerCasedAction){
             case "warn":
@@ -37,7 +37,7 @@ var plugin = {
         const penaltyObj = this.getPenalty(message);
         if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
-        this.handlePenalty(penaltyObj.action, penaltyObj.message, gameEvent.Origin);
+        this.handlePenalty(penaltyObj.action, penaltyObj.message, penaltyObj.timespan, gameEvent.Origin);
     },
 
     onEventAsync: function (gameEvent, server) {
