@@ -20,6 +20,15 @@ var plugin = {
     logger: null,
     manager: null,
 
+    //loops through messages and get message with valid input id or returns the default message
+    getMessageById: function(id){
+        for(i = 0; i < messages.length; i++){
+            if(id === messages[i].id)
+                return messages[i].message;
+        }
+
+        return defaultMessage;
+    },
 
     //get valid penalty for a message based on config file/data
     getPenalty: function(message){
