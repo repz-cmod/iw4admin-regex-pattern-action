@@ -10,16 +10,20 @@ var plugin = {
     getPenalty: function(message){
         //todo: check patterns map
 
-        return {hasPenalty: false, penalty: null, message: ''};
+        return {hasPenalty: false, action: null, message: ''};
+    },
+
+    handlePenalty: function(action, origin){
+        
     },
 
     //handle a message
     onMessage: function(gameEvent, server){
         const message = gameEvent.Message;
-        const penalty = this.getPenalty(message);
-        if(penalty === undefined || !penalty.hasPenalty)
+        const penaltyObj = this.getPenalty(message);
+        if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
-        
+        this.handlePenalty(penaltyObj.action, penaltyObj.message, gameEvent.Origin);
     },
 
     onEventAsync: function (gameEvent, server) {
