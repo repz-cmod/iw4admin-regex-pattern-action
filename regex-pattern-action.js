@@ -1,11 +1,16 @@
 //config
+
+const defaultMessage = "Behave!"; //default reason message
+
+//defines messages by id to use in penalties
 const messages = [
     {id: "1", message: "Template message"}
-]
+];
 
+//penalties list
 const penalties = [
     {regex: "", action: "", timespan: "", messageId: "1"},
-]
+];
 
 
 var plugin = {
@@ -14,6 +19,7 @@ var plugin = {
     name: 'Regex Pattern Action',
     logger: null,
     manager: null,
+
 
     //get valid penalty for a message based on config file/data
     getPenalty: function(message){
