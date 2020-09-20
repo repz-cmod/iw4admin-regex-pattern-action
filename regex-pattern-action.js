@@ -16,7 +16,9 @@ const penalties = [
 const discordConfig = {
     useDiscord: false,
     webhookUrl = '',
-    footer = {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"} //footer, change it to your server information if you want
+    footer = {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"}, //footer, change it to your server information if you want
+    colorValue = 7506394,
+    iw4adminUrlPrefix = '',
 }
 
 
