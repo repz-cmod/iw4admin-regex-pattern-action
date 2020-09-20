@@ -4,12 +4,12 @@ const defaultMessage = "Behave!"; //default reason message
 
 //defines messages by id to use in penalties
 const messages = [
-    {id: "1", message: "Template message"}
+    {id: "1", message: "You are such an asshole"}
 ];
 
 //penalties list
 const penalties = [
-    {regex: new RegExp(""), action: "", timespan: "", messageId: "1"},
+    {regex: /^(?=.*\b(rekt)\b)(?=.*\bBy\b)(?=.*\bExodus\b).+/gm, action: "permban", timespan: "", messageId: "1"},
 ];
 
 // discord config
@@ -91,7 +91,9 @@ var plugin = {
         //todo: check patterns map
         for(i = 0; i < penalties.length; i++){
             var penalty = penalties[i];
-            if(penalty.regex.test(messages)){
+            console.log("Testing regex " + i + " for message " + message)
+            if(penalty.regex.exec(message) !== null){
+                console.log("matched");
                 return {hasPenalty: true, action: penalty.action, message: this.getMessageById(penalty.messageId), timespan: penalty.timespan}; 
             }
         }
@@ -196,9 +198,11 @@ var gameEvent = {
 
     Type: 15,
 
-    Message: ""
+    Message: "^7Player ^1 NyashaG ^7Got rekt By ^5 Exodus^7 with a ^1BodyShot."
 }
 
+console.log("running test...");
 // run test
 plugin.onLoadAsync(manager);
 plugin.onEventAsync(gameEvent, server);
+console.log("finished running test");
