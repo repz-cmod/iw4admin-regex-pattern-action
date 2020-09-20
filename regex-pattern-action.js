@@ -7,8 +7,16 @@ var plugin = {
     logger: null,
     manager: null,
 
+    //handle a message
+    onMessage: function(gameEvent, server){
+        const message = gameEvent.Message;
+
+    },
+
     onEventAsync: function (gameEvent, server) {
-        
+        if(gameEvent.Type === 15){ //client sent a message
+            this.onMessage(gameEvent, server);
+        }
     },
 
     onLoadAsync: function (manager) {
