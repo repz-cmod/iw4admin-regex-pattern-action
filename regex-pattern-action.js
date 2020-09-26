@@ -32,22 +32,27 @@ var plugin = {
     logger: null,
     manager: null,
 
+    setCharAt: function(str,index,chr) {
+        if(index > str.length-1) return str;
+        return str.substring(0,index) + chr + str.substring(index+1);
+    },
+
     //cleans host name of server
-    cleanHostname: function(hostname){
+    cleanColors: function(input){
         var index = 0;
         do{
-            index = hostname.indexOf("^");
-            hostname = this.setCharAt(hostname, index, "");
-            hostname = this.setCharAt(hostname, index, "");
+            index = input.indexOf("^");
+            input = this.setCharAt(input, index, "");
+            input = this.setCharAt(input, index, "");
         }while(index !== -1);
 
-        return hostname;
+        return input;
     },
 
     //sends discord message about the ban
     handleDiscordMessage: function(penalty, message, server, origin){
         if(!discordConfig.enable || discordConfig.forActions.includes(penalty.action)) return;
-        let cleanHostname = this.cleanHostname(server.Hostname);
+        let cleanHostname = this.cleanColors(server.Hostname);
         var embed = {
             "title": discordConfig.title,
             "description": "Player **" + origin.CleanedName + "** (["+origin.AliasLinkId+"]("+discordConfig.iw4adminUrlPrefix + origin.AliasLinkId+")) has sent a message that resulted with a penalty.\n" +
@@ -125,7 +130,7 @@ var plugin = {
     onMessage: function(gameEvent, server){
         if(gameEvent.Origin === undefined || gameEvent.Origin == null)
             return;
-        const message = gameEvent.Message;
+        const message = this.cleanColors(gameEvent.Message);
         const penaltyObj = this.getPenalty(message);
         if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
