@@ -17,7 +17,7 @@ const discordConfig = {
     enable: false,
     webhookUrl: '',
     title: "**Player has faced a penalty**",
-    footer: {"text": "Flagged User Discord Tracker | v1.0 | By Repz Sep"}, //footer, change it to your server information if you want
+    footer: {"text": "Regex Pattern Action | v1.0 | By Repz Sep"}, //footer, change it to your server information if you want
     colorValue: 7506394,
     iw4adminUrlPrefix: '',
     forActions: ['ban', 'permban']
