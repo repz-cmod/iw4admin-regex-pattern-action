@@ -4,13 +4,16 @@ const defaultMessage = "Behave!"; //default reason message
 
 //defines messages by id to use in penalties
 const messages = [
-    {id: "1", message: "You are such an asshole"}
+    {id: "1", message: "Exodus Detected"},
+    {id: "2", message: "Stop testing me!"}
 ];
 
 //penalties list
 const penalties = [
-    {regex: /^(?=.*\b(rekt)\b)(?=.*\bBy\b)(?=.*\bExodus\b).+/gm, action: "permban", timespan: "", messageId: "1"},
+    {regex: /^(?=.*\b(Player)\b)(?=.*\b(rekt)\b)(?=.*\bBy\b)(?=.*\bExodus\b).+/gm, action: "permban", timespan: "", messageId: "1"},
+    {regex: /\bTest\b/gm, action: "warn", messageId: "2"},
 ];
+
 
 // discord config
 const discordConfig = {
@@ -32,22 +35,27 @@ var plugin = {
     logger: null,
     manager: null,
 
+    setCharAt: function(str,index,chr) {
+        if(index > str.length-1) return str;
+        return str.substring(0,index) + chr + str.substring(index+1);
+    },
+
     //cleans host name of server
-    cleanHostname: function(hostname){
+    cleanColors: function(input){
         var index = 0;
         do{
-            index = hostname.indexOf("^");
-            hostname = this.setCharAt(hostname, index, "");
-            hostname = this.setCharAt(hostname, index, "");
+            index = input.indexOf("^");
+            input = this.setCharAt(input, index, "");
+            input = this.setCharAt(input, index, "");
         }while(index !== -1);
 
-        return hostname;
+        return input;
     },
 
     //sends discord message about the ban
     handleDiscordMessage: function(penalty, message, server, origin){
         if(!discordConfig.enable || discordConfig.forActions.includes(penalty.action)) return;
-        let cleanHostname = this.cleanHostname(server.Hostname);
+        let cleanHostname = this.cleanColors(server.Hostname);
         var embed = {
             "title": discordConfig.title,
             "description": "Player **" + origin.CleanedName + "** (["+origin.AliasLinkId+"]("+discordConfig.iw4adminUrlPrefix + origin.AliasLinkId+")) has sent a message that resulted with a penalty.\n" +
@@ -91,7 +99,7 @@ var plugin = {
         //todo: check patterns map
         for(i = 0; i < penalties.length; i++){
             var penalty = penalties[i];
-            console.log("Testing regex " + i + " for message " + message)
+            console.log("Testing regex " + i + " for message: " + message)
             if(penalty.regex.exec(message) !== null){
                 console.log("matched");
                 return {hasPenalty: true, action: penalty.action, message: this.getMessageById(penalty.messageId), timespan: penalty.timespan}; 
@@ -125,7 +133,7 @@ var plugin = {
 
     //handle a message
     onMessage: function(gameEvent, server){
-        const message = gameEvent.Message;
+        const message = this.cleanColors(gameEvent.Message);
         const penaltyObj = this.getPenalty(message);
         if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
@@ -205,4 +213,10 @@ console.log("running test...");
 // run test
 plugin.onLoadAsync(manager);
 plugin.onEventAsync(gameEvent, server);
+gameEvent.Message = "Im gonna Test this";
+plugin.onEventAsync(gameEvent, server);
+
+gameEvent.Message = "Got rekt By Exodus";
+plugin.onEventAsync(gameEvent, server);
+
 console.log("finished running test");
