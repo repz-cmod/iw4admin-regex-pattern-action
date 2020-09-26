@@ -1,3 +1,7 @@
+// DO NOT RUN THIS INSIDE IW4ADMIN! THIS IS NOT THE PLUGIN! 
+// Use regex-Pattern-action.js for plugin. This file is just a test for developers.
+
+
 //config
 
 const defaultMessage = "Behave!"; //default reason message
