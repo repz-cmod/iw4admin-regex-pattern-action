@@ -55,7 +55,7 @@ var plugin = {
         let cleanHostname = this.cleanColors(server.Hostname);
         var embed = {
             "title": discordConfig.title,
-            "description": "Player **" + origin.CleanedName + "** (["+origin.AliasLinkId+"]("+discordConfig.iw4adminUrlPrefix + origin.AliasLinkId+")) has sent a message that resulted with a penalty.\n" +
+            "description": "Player **" + origin.CleanedName + "** (["+origin.ClientId+"]("+discordConfig.iw4adminUrlPrefix + origin.ClientId+")) has sent a message that resulted with a penalty.\n" +
                             "Penalty Action: **"+ penalty.action +"**\n"+                
                             "Message: `"+ message +"`\n"+
                             "Server: **"+ cleanHostname+"**\n"+
@@ -139,7 +139,7 @@ var plugin = {
     },
 
     onEventAsync: function (gameEvent, server) {
-        if(gameEvent.Type === 15){ //client sent a message
+        if(gameEvent.Type === 100){ //client sent a message
             this.onMessage(gameEvent, server);
         }
     },
