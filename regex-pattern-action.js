@@ -135,12 +135,16 @@ var plugin = {
         if(penaltyObj === undefined || !penaltyObj.hasPenalty)
             return;
         this.handlePenalty(penaltyObj.action, penaltyObj.message, penaltyObj.timespan, gameEvent.Origin);
-        this.handleDiscordMessage(penalty, message, server, gameEvent.Origin);
+        this.handleDiscordMessage(penaltyObj, message, server, gameEvent.Origin);
     },
 
     onEventAsync: function (gameEvent, server) {
         if(gameEvent.Type === 100){ //client sent a message
-            this.onMessage(gameEvent, server);
+            try{
+                this.onMessage(gameEvent, server);
+            }catch (error){
+                this.logger.WriteWarning('There was a with handling message in RPA: ' + error.message);
+            }
         }
     },
 
